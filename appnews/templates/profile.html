@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block nav %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Aggregator</a>
+    <div class="navbar-nav">
+              <a  href="{{ url_for ('auth.logout') }}">Logout</a>
+  </div>
+</nav>
+    {% endblock %}
+    {% block content %}
+
+<div class="container">
+  <div class="row">
+
+    <div class="col-sm-4">
+                <div class="card my-3">
+                    <div class="card-thumbnail">
+                        <img src="https://dr5dymrsxhdzh.cloudfront.net/blog/images/a14a4dfb7/2018/09/computers.jpg" class="img-fluid" alt="thumbnail">
+                    </div>
+                    <div class="card-body">
+                        <a  value="Finance" name="finance" href="{{ url_for ('main.news_table',username=request.view_args['username'] ,category='finance')}}">Finance</a>
+                    </div>
+                </div>
+                    </div>
+    <div class="col-sm-4">
+                <div class="card my-3">
+                    <div class="card-thumbnail">
+                        <img src="https://www.wallpaperup.com/uploads/wallpapers/2016/08/04/1003633/4d146c98300f39f47a8a12e905028cdd-1000.jpg" class="img-fluid" alt="thumbnail ">
+                    </div>
+                    <div class="card-body">
+                    <a value="Politics" name="politics" href="{{ url_for ('main.news_table',username=request.view_args['username'] ,category='politics')}}" >Politics</a>
+                    </div>
+                </div>
+                        </div>
+    <div class="col-sm-4">
+                <div class="card my-3">
+                    <div class="card-thumbnail">
+                        <img src="https://p4.wallpaperbetter.com/wallpaper/971/967/737/sports-images-for-desktop-background-wallpaper-preview.jpg" class="img-fluid" alt="thumbnail">
+                    </div>
+                    <div class="card-body">
+        <a  value="Sport" name="sport" href="{{ url_for ('main.news_table',username=request.view_args['username'] ,category='sport')}}" >Sport</a>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+
+  <div class="row">
+    <div class="col-sm-4">
+     <div class="card my-3">
+                    <div class="card-thumbnail">
+                        <img src="https://i.pinimg.com/originals/29/59/cb/2959cb8f8b01bf05330fd941b89b27fd.jpg" class="img-fluid" alt="thumbnail">
+                    </div>
+                    <div class="card-body">
+        <a  value="Science" name="science" href="{{ url_for ('main.news_table',username=request.view_args['username'] ,category='science')}}" >Science</a>
+                    </div>
+                </div>
+    </div>
+
+    <div class="col-sm-4">
+        <div class="card my-3">
+                    <div class="card-thumbnail">
+                        <img src="https://c4.wallpaperflare.com/wallpaper/58/196/856/headphones-wallpaper-preview.jpg" class="img-fluid" alt="thumbnail">
+                    </div>
+                    <div class="card-body">
+        <a  value="Music" name="music" href="{{ url_for ('main.news_table',username=request.view_args['username'] ,category='music')}}" >Music</a>
+                    </div>
+                </div>
+  </div>
+
+
+    <div class="col-sm-4">
+                <div class="card my-3">
+                    <div class="card-thumbnail">
+                        <img src="https://coolwallpapers.me/th700/5664156-medical-wallpapers.jpg" class="img-fluid" alt="thumbnail">
+                    </div>
+                    <div class="card-body">
+        <a  value="Health & Medicine" name="health&medicine" href="{{ url_for ('main.news_table',username=request.view_args['username'] ,category='health&medicine')}}" >Health & Medicine</a>
+                    </div>
+                </div>
+            </div>
+  </div>
+
+  <div class="row justify-content-center">
+        <div class="col-sm-6" >
+                <div class="card my-sm-6">
+                    <div class="card-thumbnail">
+                        <img src="https://sia.az/storage/2021/05/21/hava5.jpg" class="img-fluid" alt="thumbnail">
+                    </div>
+                    <div class="card-body">
+        <a  value="Weather" name="weather" href="{{ url_for ('main.news_table',username=request.view_args['username'] ,category='weather')}}">Weather</a>
+                    </div>
+                </div>
+            </div>
+</div>
+</div>
+
+
+        {% endblock %}
+
+
+
+
+

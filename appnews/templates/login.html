@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block login %}
+
+        {% for message in get_flashed_messages() %}
+      <div class="alert alert-warning">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert">
+          x
+        </button>
+        {{ message }}
+      </div>
+    {% endfor %}
+
+    <div class="container">
+    <h1> DailyNews</h1>
+
+<form method="post" role="form">
+
+    {{ form.csrf_token }}
+
+  <fieldset class="username">{{ form.username(placeholder='Username') }}
+  </fieldset>
+
+      <fieldset class="password">{{ form.password(placeholder='Password') }}
+      </fieldset>
+
+<fieldset class="submit">{{ form.submit(placeholder='Submit') }}
+</fieldset>
+
+      <div class="login-signup">
+        <span>Don't have an account?</span>
+        <a href="{{ url_for('auth.index') }}">Sign up.</a>
+      </div>
+    </form>
+        </div>
+    </div>
+{% endblock %}

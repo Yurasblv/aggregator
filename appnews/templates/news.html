@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block nav %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Aggregator</a>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+     <a  href="{{ url_for ('auth.logout') }}">Logout</a>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+{% block content %}
+
+        {% for d in data %}
+  <a href="{{ d.link }}" class="list-group-item list-group-item-action flex-column align-items-start">
+        {% if d.created_at  %}
+      <small class="text-muted">{{ d.created_at}}</small>
+        {% endif %}
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{ d.title }}</h5>
+      <small class="text-muted">{{ d.published_at }}</small>
+    </div>
+    <p class="mb-1">{{ d.body }}</p>
+    <small class="text-muted">{{ d.author}}</small>
+  </a>
+            {% endfor %}
+{% endblock %}
+
+{% block script %}
+
+    <script type="text/javascript">
+{#if (document.referrer !== document.location.href) {#}
+{#    setTimeout(function() {#}
+{#        document.location.reload()#}
+{#  }, 10000);#}
+{#}#}
+
+</script>
+{% endblock %}
