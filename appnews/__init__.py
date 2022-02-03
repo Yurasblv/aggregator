@@ -1,5 +1,4 @@
 import os.path
-import appnews.views
 from appnews.models import db, User, News, Contoller
 from flask import redirect, url_for
 from config import Config, ProductionConfig, DevelopmentConfig
