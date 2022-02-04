@@ -1,0 +1,57 @@
+version: "3.3"
+
+services:
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: data
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - .dbdata:/var/lib/mysql
+
+
+  redis:
+    image: redis:4
+    ports:
+      - 6379:6379
+<<<<<<< HEAD
+
+  worker:
+    build: .
+    entrypoint: celery
+    command: -A appnews.tasks.celery worker --loglevel=info
+=======
+#
+  worker:
+    build: .
+    command: celery -A appnews.tasks.celery worker --loglevel=info
+>>>>>>> 4509ef7... dockerized
+    volumes:
+      - .:/newsaggregator/
+
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/newsaggregator/
+    command: bash -c 'wait-db.sh db:3306 && python app.py'
+    depends_on:
+      - db
+      - redis
+      - worker
+      - beat
+
+
+  beat:
+    build: .
+    entrypoint: celery
+    command: -A appnews.tasks.celery beat --loglevel=info
+    volumes:
+      - .:/newsaggregator/
+

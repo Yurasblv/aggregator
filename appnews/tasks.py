@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import datetime
-from appnews import create_app , celery
+=======
+from datetime import datetime
+>>>>>>> 4509ef7... dockerized
+from appnews import create_app, celery
 from appnews.models import News, db
 import requests
 import json
@@ -8,12 +12,77 @@ from celery.schedules import crontab
 
 @celery.task()
 def news_parser(category):
+<<<<<<< HEAD
+    # with create_app().app_context():
+    global url
+    if category == "politics":
+        url = "http://api.mediastack.com/v1/news?access_key=e487ad4bb128b050f48e92f37a6e135c&categories=general&languages=en,%20ru&sources=cnn,bbc&keywords=politics"
+    elif category == "sport":
+        url = (
+            "http://api.mediastack.com/v1/news?access_key=e487ad4bb128b050f48e92f37a6e135c&categories=sports"
+            "&languages=en, "
+            "ru&sources=espn&keywords=sports "
+        )
+    elif category == "finance":
+        url = (
+            "http://api.mediastack.com/v1/news?access_key=e487ad4bb128b050f48e92f37a6e135c&categories=business"
+            "&languages=en, "
+            "ru&sources=abc,time,forbes,guardian"
+        )
+    elif category == "science":
+        url = (
+            "http://api.mediastack.com/v1/news?access_key=e487ad4bb128b050f48e92f37a6e135c&categories=science"
+            "&languages=en, "
+            "ru&sources=abc,time,forbes,guardian,cnn,bbc"
+        )
+    elif category == "health&medicine":
+        url = (
+            "http://api.mediastack.com/v1/news?access_key=e487ad4bb128b050f48e92f37a6e135c&categories=health"
+            "&languages=en,ru "
+        )
+    elif category == "weather":
+        url = (
+            "http://api.mediastack.com/v1/news?access_key=e487ad4bb128b050f48e92f37a6e135c&categories=general"
+            "&languages=en, "
+            "ru&sources=bbc,cnn&keywords=weather"
+        )
+    elif category == "music":
+        url = (
+            "http://api.mediastack.com/v1/news?access_key=e487ad4bb128b050f48e92f37a6e135c&categories=general"
+            "&languages=en,ru&sources=bbc,cnn&keywords=song&keywords=music "
+        )
+    response = requests.get(url)
+    print(response)
+    if response.status_code == 429:
+        reserve_parser(category)
+    else:
+        json_data = json.loads(response.text).items()
+        for row in json_data:
+            for item in row:
+                if isinstance(item, list):
+                    for i in item:
+                        news = News(
+                            title=i["title"],
+                            body=i["description"],
+                            link=i["url"],
+                            author=i["author"],
+                            created_at=i["published_at"],
+                            category=category,
+                        )
+                        if (
+                            bool(News.query.filter_by(title=news.title).first())
+                            is False
+                        ):
+                            db.session.add(news)
+                            db.session.commit()
+                            print("Done")
+                        else:
+                            print("Not Done")
+=======
     with create_app().app_context():
         global url
         if category == "politics":
-            url = (
-                'http://api.mediastack.com/v1/news?access_key=e487ad4bb128b050f48e92f37a6e135c&categories=general&languages=en,%20ru&sources=cnn,bbc&keywords=politics'
-            )
+            url = "http://api.mediastack.com/v1/news?access_key=e487ad4bb128b050f48e92f37a6e135c&categories=general&languages=en,%20ru&sources=cnn,bbc&keywords=politics"
         elif category == "sport":
             url = (
                 "http://api.mediastack.com/v1/news?access_key=e487ad4bb128b050f48e92f37a6e135c&categories=sports"
@@ -49,7 +118,6 @@ def news_parser(category):
                 "&languages=en,ru&sources=bbc,cnn&keywords=song&keywords=music "
             )
         response = requests.get(url)
-        print(response)
         if response.status_code == 429:
             reserve_parser(category)
         else:
@@ -57,15 +125,17 @@ def news_parser(category):
             for row in json_data:
                 for item in row:
                     if isinstance(item, list):
+                        print(item)
                         for i in item:
                             news = News(
-                                title=i["title"],
-                                body=i["description"],
+                                title=i["title"][:180],
+                                body=i["description"][:250],
                                 link=i["url"],
                                 author=i["author"],
-                                created_at=i["published_at"],
+                                created_at= datetime.strptime(i["published_at"].replace('T', ' ')[:-6], '%Y-%m-%d %H:%M:%S'),
                                 category=category,
                             )
+                            print(news)
                             if (
                                 bool(News.query.filter_by(title=news.title).first())
                                 is False
@@ -75,7 +145,11 @@ def news_parser(category):
                                 print("Done")
                             else:
                                 print("Not Done")
+>>>>>>> 4509ef7... dockerized
+
+
 #
+
 
 def reserve_parser(category):
     global url
@@ -100,7 +174,7 @@ def reserve_parser(category):
                 for i in item:
                     news = News(
                         title=i["title"][:180],
-                        body=i["description"],
+                        body=i["description"][:250],
                         link=i["url"],
                         author=i["author"],
                         created_at=i["publishedAt"].strip("Z"),

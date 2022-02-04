@@ -3,9 +3,10 @@ from flask import Blueprint
 from appnews.models import db, User
 from flask_login import logout_user, login_required
 from flask_login import current_user, login_user
-from appnews.forms import LoginForm,RegistrationForm
+from appnews.forms import LoginForm, RegistrationForm
 
-auth = Blueprint('auth',__name__)
+auth = Blueprint("auth", __name__)
+
 
 @auth.route("/signup", methods=["GET", "POST"])
 def index():

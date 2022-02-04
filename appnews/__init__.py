@@ -1,16 +1,22 @@
-import os.path
-from appnews.models import db, User, News, Contoller
 from flask import redirect, url_for
-from config import Config, ProductionConfig, DevelopmentConfig
 from celery import Celery
-from flask import Flask
+from flask import Flask,flash
 from flask_admin import Admin
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+from config import ProductionConfig, DevelopmentConfig
 
+migrate = Migrate()
+db = SQLAlchemy()
 celery = Celery(__name__)
+login = LoginManager()
+admin = Admin(name="Aggregator", template_mode="bootstrap3")
+app = Flask(__name__, static_folder="static/")
+
 
 def create_app():
+
     app = Flask(__name__, static_folder="static/")
 
     if app.config["ENV"] == "development":
@@ -18,12 +24,20 @@ def create_app():
     elif app.config["ENV"] == "production":
         app.config.from_object(ProductionConfig)
 
-    admin = Admin(app, name="Aggregator", template_mode="bootstrap3", )
-    admin.add_view(Contoller(User, db.session,))
+
+    admin.init_app(app)
+    from appnews.models import User, News, Contoller
+    admin.add_view(Contoller(User, db.session))
     admin.add_view(Contoller(News, db.session))
 
-    login = LoginManager()
     login.init_app(app)
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    with app.app_context():
+        celery.conf.update(app.config)
+        db.create_all()
+
 
     @login.user_loader
     def load_user(id):
@@ -34,15 +48,7 @@ def create_app():
         flash("You must be logged in to view that page.")
         return redirect(url_for("auth.login"))
 
-    db.init_app(app)
-    migrate = Migrate()
-    migrate.init_app(app, db)
-
-    with app.app_context():
-        db.create_all()
-        celery.conf.update(app.config)
-        register_blueprints(app)
-
+    register_blueprints(app)
     return app
 
 def register_blueprints(app):

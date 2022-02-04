@@ -1,0 +1,2 @@
+SQLALCHEMY_DATABASE_URI="mysql+pymysql://b4f0d5bc23163c:a4f2de40@eu-cdbr-west-02.cleardb.net/heroku_4a4f9b9f3179050"
+SECRET_KEY="prodsecurity"

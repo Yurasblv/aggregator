@@ -1,11 +1,8 @@
 import datetime
 from flask_admin.contrib.sqla import ModelView
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import abort
-
-db = SQLAlchemy()
+from appnews import db
 
 
 class Contoller(ModelView):
@@ -28,7 +25,7 @@ class User(UserMixin, db.Model):
     last_login = db.Column(
         db.DateTime, index=False, unique=False, nullable=True, autoincrement=True
     )
-    is_admin = db.Column(db.Boolean,default=False)
+    is_admin = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return f"User data :{self.id}:{self.username}"
